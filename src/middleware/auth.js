@@ -4,7 +4,7 @@ const { isValidObjectId } = require('../validation/valid');
 const userModel = require('../model/userModel');
 
 //--------------------authentication--------------------
-const Authentication = async function (req, res, next) {
+const authentication = async function (req, res, next) {
     try {
         let token = req.headers["x-api-key"] || req.headers["x-api-key"];
         if (!token)
@@ -21,5 +21,26 @@ const Authentication = async function (req, res, next) {
     };
 }
 
+const authorization = async (req, res, next) => {
+    try {
+      let loggedInUser = req.decoded.userId;
+      let loginUser;
+  
+      if (req.params?.userId) {
+        if (!isValidObjectId(req.params.userId)) return res.status(400).send({ status: false, message: "Enter a valid user Id" })
+        let checkUserId = await userModel.findById(req.params.userId);
+        if (!checkUserId) return res.status(404).send({ status: false, message: "User not found" });
+        loginUser = checkUserId._id.toString();
+      }
+  
+      if (!loginUser) return res.status(400).send({ status: false, message: "User-id is required" })
+  
+      if (loggedInUser !== loginUser) return res.status(403).send({ status: false, message: "Error!! authorization failed" });
+      next();
+    } catch (err) {
+      res.status(500).send({ status: false, error: err.message })
+    }
+  }
 
-module.exports = { Authentication }
+
+module.exports = { authentication, authorization }

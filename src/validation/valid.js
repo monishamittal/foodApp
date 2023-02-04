@@ -1,10 +1,10 @@
-// const mongoose = require("mongoose")
+const mongoose = require("mongoose")
 
 //--------------------Value Validation--------------------
-// const isValidObjectId = function (id) {
-//     var ObjectId = mongoose.Types.ObjectId;
-//     return ObjectId.isValid(id)
-// }
+const isValidObjectId = function (id) {
+    var ObjectId = mongoose.Types.ObjectId;
+    return ObjectId.isValid(id)
+}
 
 //--------------------valid req body------------------
 const isValid = function (value) {
@@ -36,6 +36,10 @@ const isValidPassword = function (password) {
 //     const profileRegex = /[^\\s]+(.*?)\\.(jpg|jpeg|png|gif|JPG|JPEG|PNG|GIF)$/
 //     return profileRegex.test(profile)
 // }
+const isValidNumber = function (number) {
+    var re = /^\d{0,8}[.]?\d{1,4}$/;
+    return re.test(number);
+}
 
 //--------------------making file public--------------------
-module.exports = { isValidName, isValidEmail, isValidPassword, isValid }
+module.exports = { isValidName, isValidEmail, isValidPassword, isValid, isValidNumber,isValidObjectId }

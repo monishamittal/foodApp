@@ -4,12 +4,13 @@ const dotenv =require('dotenv').config()
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const route = require('./route/route')
-// const multer = require("multer")
+const multer = require("multer")
 
 const app = express()
+app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(multer().any())
+ app.use(multer().any())
 
 
 //----------------------------connecting database......-----------------------
